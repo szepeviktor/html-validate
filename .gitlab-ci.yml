@@ -67,6 +67,13 @@ Docs:
     - git status --porcelain
     - test -z "$(git status --porcelain)" || (echo 'working copy dirty, need to commit updated specs'; exit 1)
 
+SAST:
+  image: opensecurity/nodejsscan
+  before_script:
+    - pip3 install /usr/src/NodeJsScan
+  script:
+    - nodejsscan -d build
+
 .compat: &compat
   stage: compatibility
   dependencies: []
