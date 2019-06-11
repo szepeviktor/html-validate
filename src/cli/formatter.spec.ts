@@ -1,3 +1,4 @@
+import { UserError } from "../error/user-error";
 import { Report } from "../reporter";
 import { getFormatter } from "./formatter";
 
@@ -60,5 +61,12 @@ describe("cli/formatters", () => {
 		const wrapped = getFormatter("text=foo.txt");
 		wrapped(report);
 		expect(writeFileSync).toHaveBeenCalledWith("foo.txt", "", "utf-8");
+	});
+
+	it("should throw exception when requesting unknown formatter", () => {
+		expect(() => getFormatter("missing")).toThrowError(UserError);
+		expect(() => getFormatter("missing")).toThrowError(
+			'No formatter named "missing"'
+		);
 	});
 });

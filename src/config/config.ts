@@ -40,6 +40,8 @@ function mergeInternal(base: ConfigData, rhs: ConfigData): ConfigData {
 function loadFromFile(filename: string): ConfigData {
 	let json;
 	try {
+		// user expects given configuration file to be loaded
+		// tslint:disable-next-line:tsr-detect-non-literal-require
 		// eslint-disable-next-line security/detect-non-literal-require
 		json = require(filename);
 	} catch (err) {
@@ -211,6 +213,7 @@ export class Config {
 			}
 
 			/* assume it is loadable with require() */
+			// tslint:disable-next-line:tsr-detect-non-literal-require
 			// eslint-disable-next-line security/detect-non-literal-require
 			metaTable.loadFromObject(require(entry));
 		}
@@ -271,6 +274,8 @@ export class Config {
 
 	private loadPlugins(plugins: string[]): Plugin[] {
 		return plugins.map((moduleName: string) => {
+			// user expects the given plugin to be loaded
+			// tslint:disable-next-line:tsr-detect-non-literal-require
 			// eslint-disable-next-line security/detect-non-literal-require
 			const plugin = require(moduleName.replace(
 				"<rootDir>",
@@ -316,6 +321,8 @@ export class Config {
 				);
 			}
 		} else {
+			// loads the file requested by the user
+			// tslint:disable-next-line:tsr-detect-non-literal-fs-filename
 			const data = fs.readFileSync(filename, { encoding: "utf8" });
 			return [
 				{
@@ -338,9 +345,13 @@ export class Config {
 	private precompileTransformers(transform: TransformMap): Transformer[] {
 		return Object.entries(transform).map(([pattern, module]) => {
 			return {
+				// user-controlled, but the user would only ddos themselves if providing a too complex regex
+				// tslint:disable-next-line:tsr-detect-non-literal-regexp
 				// eslint-disable-next-line security/detect-non-literal-regexp
 				pattern: new RegExp(pattern),
 
+				// user expects given plugin path to be loaded
+				// tslint:disable-next-line:tsr-detect-non-literal-require
 				// eslint-disable-next-line security/detect-non-literal-require
 				fn: require(module.replace("<rootDir>", this.rootDir)),
 			};
@@ -357,6 +368,9 @@ export class Config {
 		// eslint-disable-next-line no-constant-condition
 		while (true) {
 			const search = path.join(current, "package.json");
+
+			// while not literal it isn't fully user-controlled either
+			// tslint:disable-next-line:tsr-detect-non-literal-fs-filename
 			if (fs.existsSync(search)) {
 				return (rootDirCache = current);
 			}

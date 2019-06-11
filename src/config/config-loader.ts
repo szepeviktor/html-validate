@@ -64,6 +64,8 @@ export class ConfigLoader {
 		while (true) {
 			const search = path.join(current, ".htmlvalidate.json");
 
+			// while not literal the path is not fully user-controlled
+			// tslint:disable-next-line:tsr-detect-non-literal-fs-filename
 			if (fs.existsSync(search)) {
 				const local = this.configClass.fromFile(search);
 				config = local.merge(config);
