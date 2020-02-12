@@ -280,6 +280,8 @@ class HtmlValidate {
 			return merged;
 		}
 
+		console.log("test");
+
 		const config = this.configLoader.fromTarget(filename);
 		const merged = this.globalConfig.merge(config).merge(override);
 		merged.init();
