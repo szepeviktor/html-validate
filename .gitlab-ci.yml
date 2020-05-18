@@ -172,6 +172,16 @@ Module:
     - npm exec tsc -- --build tests/integration/${BUILD}
     - node tests/integration/${BUILD}
 
+Windows:
+  <<: *compat
+  needs: []
+  before_script:
+    - npm ci
+  tags:
+    - shared-windows
+    - windows
+    - windows-1809
+
 .release:
   stage: release
   variables:
