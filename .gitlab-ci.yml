@@ -89,8 +89,9 @@ Docs:
     - git status
     - test -z "$(git status --porcelain)" || (echo 'working copy dirty, need to commit updated specs'; exit 1)
 
-.compat: &compat
+compatibility:
   stage: compatibility
+  image: node:${NODE_VERSION}
   dependencies: []
   needs: ["Build"]
   before_script:
@@ -99,18 +100,10 @@ Docs:
     - npm test
     - npm run build
     - npm run compatibility
-
-Node 10.x (LTS):
-  <<: *compat
-  image: node:10
-
-Node 12.x (LTS):
-  <<: *compat
-  image: node:12
-
-Node 14.x (current):
-  <<: *compat
-  image: node:14
+  parallel:
+    matrix:
+      - NODE_VERSION: [10, 12, 14]
+        OS: linux
 
 Release:
   stage: release
