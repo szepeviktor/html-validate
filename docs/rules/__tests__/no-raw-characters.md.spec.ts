@@ -1,3 +1,4 @@
+/* eslint-disable-next-line node/no-unpublished-import */
 import HtmlValidate from "../../../src/htmlvalidate";
 
 const markup: { [key: string]: string } = {};

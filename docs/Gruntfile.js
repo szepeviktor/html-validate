@@ -1,3 +1,4 @@
+const path = require("path");
 const sass = require("sass");
 const serveStatic = require("serve-static");
 
@@ -9,7 +10,7 @@ module.exports = function (grunt) {
 	grunt.registerTask("dgeni", "Generate documentation", function () {
 		const Dgeni = require("dgeni");
 		const done = this.async();
-		const dgeni = new Dgeni([require("./docs/dgeni")]);
+		const dgeni = new Dgeni([require("./dgeni")]);
 		try {
 			dgeni
 				.generate()
@@ -39,13 +40,13 @@ module.exports = function (grunt) {
 			options: {
 				implementation: sass,
 				includePaths: [
-					"node_modules/font-awesome/scss/",
-					"node_modules/bootstrap-sass/assets/stylesheets/",
+					path.dirname(require.resolve("font-awesome/scss/font-awesome.scss")),
+					path.dirname(require.resolve("bootstrap-sass/assets/stylesheets/_bootstrap.scss")),
 				],
 			},
 			default: {
-				src: "docs/app/docs.scss",
-				dest: "public/assets/docs.css",
+				src: "app/docs.scss",
+				dest: "../public/assets/docs.css",
 			},
 		},
 
@@ -55,28 +56,30 @@ module.exports = function (grunt) {
 			},
 			default: {
 				src: "<%=sass.default.dest%>",
-				dest: "public/assets/docs.min.css",
+				dest: "../public/assets/docs.min.css",
 			},
 		},
 
 		copy: {
 			fontawesome: {
 				expand: true,
-				cwd: "node_modules/font-awesome/fonts",
+				cwd: path.dirname(require.resolve("font-awesome/fonts/fontawesome-webfont.woff")),
 				src: "*",
-				dest: "public/assets/fonts/",
+				dest: "../public/assets/fonts/",
 			},
 			glyphicons: {
 				expand: true,
-				cwd: "node_modules/bootstrap-sass/assets/fonts/bootstrap",
+				cwd: path.dirname(
+					require.resolve("bootstrap-sass/assets/fonts/bootstrap/glyphicons-halflings-regular.woff")
+				),
 				src: "*",
-				dest: "public/assets/fonts/",
+				dest: "../public/assets/fonts/",
 			},
 			favicon: {
 				expand: true,
-				cwd: "docs/app",
+				cwd: "app",
 				src: "favicon.ico",
-				dest: "public/",
+				dest: "../public/",
 			},
 		},
 
@@ -92,8 +95,8 @@ module.exports = function (grunt) {
 						],
 					],
 				},
-				src: "docs/app/index.js",
-				dest: "public/assets/docs.js",
+				src: "app/index.js",
+				dest: "../public/assets/docs.js",
 			},
 		},
 
@@ -102,9 +105,9 @@ module.exports = function (grunt) {
 				port: 3400,
 				hostname: "localhost",
 				keepalive: true,
-				base: "public",
+				base: "../public",
 				middleware: function () {
-					return [serveStatic("public")];
+					return [serveStatic("../public")];
 				},
 			},
 			default: {},

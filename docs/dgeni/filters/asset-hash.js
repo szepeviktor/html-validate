@@ -1,10 +1,11 @@
 const fs = require("fs");
+const path = require("path");
 const crypto = require("crypto");
 
 module.exports = {
 	name: "assetHash",
 	process: (asset) => {
-		const filename = `public/${asset}`;
+		const filename = path.resolve(__dirname, "../../..", `public/${asset}`);
 		if (fs.existsSync(filename)) {
 			const data = fs.readFileSync(filename);
 			const hash = crypto.createHash("md5").update(data).digest("hex");
