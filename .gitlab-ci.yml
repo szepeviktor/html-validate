@@ -12,6 +12,10 @@ stages:
   - release
   - postrelease
 
+code_quality:
+  artifacts:
+    paths: [gl-code-quality-report.json]
+
 NPM:
   stage: prepare
   artifacts:
@@ -59,7 +63,11 @@ Changelog:
 ESLint:
   stage: test
   needs: ["NPM"]
+  artifacts:
+    reports:
+      codequality: gl-codequality.json
   script:
+    - npm run eslint -- --format gitlab
     - npm run eslint -- --max-warnings 0
 
 Jest:
