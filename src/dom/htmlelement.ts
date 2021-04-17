@@ -17,7 +17,7 @@ export enum NodeClosed {
 	ImplicitClosed = 4, //  element with optional end tag <li>foo<li>bar
 }
 
-function isElement(node: DOMNode): node is HtmlElement {
+export function isElement(node: DOMNode): node is HtmlElement {
 	return node.nodeType === NodeType.ELEMENT_NODE;
 }
 

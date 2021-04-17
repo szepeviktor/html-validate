@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rule capitalize-text should contain contextual documentation 1`] = `
+Object {
+  "description": "Text must be capitalized in <h1>. Under the current configuration the <h1> text is required to begin with a capital letter.",
+  "url": "https://html-validate.org/rules/capitalize-text.html",
+}
+`;
+
+exports[`rule capitalize-text should contain documentation 1`] = `
+Object {
+  "description": "Text must be capitalized in this element. Under the current configuration the current elements text is required to begin with a capital letter.",
+  "url": "https://html-validate.org/rules/capitalize-text.html",
+}
+`;

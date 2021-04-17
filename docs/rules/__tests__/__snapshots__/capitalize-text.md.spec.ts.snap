@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`docs/rules/capitalize-text.md inline validation: correct 1`] = `Array []`;
+
+exports[`docs/rules/capitalize-text.md inline validation: ignored 1`] = `Array []`;
+
+exports[`docs/rules/capitalize-text.md inline validation: incorrect 1`] = `
+Array [
+  Object {
+    "errorCount": 1,
+    "filePath": "inline",
+    "messages": Array [
+      Object {
+        "column": 2,
+        "context": Object {
+          "tagName": "h1",
+        },
+        "line": 1,
+        "message": "Text must be capitalized in <h1>",
+        "offset": 1,
+        "ruleId": "capitalize-text",
+        "ruleUrl": "https://html-validate.org/rules/capitalize-text.html",
+        "selector": "h1",
+        "severity": 2,
+        "size": 2,
+      },
+    ],
+    "source": "<h1>lorem ipsum</h1>",
+    "warningCount": 0,
+  },
+]
+`;

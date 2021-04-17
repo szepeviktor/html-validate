@@ -7,6 +7,7 @@ import AttrSpacing from "./attr-spacing";
 import AttributeAllowedValues from "./attribute-allowed-values";
 import AttributeBooleanStyle from "./attribute-boolean-style";
 import AttributeEmptyStyle from "./attribute-empty-style";
+import CapitalizeText from "./capitalize-text";
 import ClassPattern from "./class-pattern";
 import CloseAttr from "./close-attr";
 import CloseOrder from "./close-order";
@@ -71,6 +72,7 @@ const bundledRules: Record<string, RuleConstructor<any, any>> = {
 	"attribute-allowed-values": AttributeAllowedValues,
 	"attribute-boolean-style": AttributeBooleanStyle,
 	"attribute-empty-style": AttributeEmptyStyle,
+	"capitalize-text": CapitalizeText,
 	"class-pattern": ClassPattern,
 	"close-attr": CloseAttr,
 	"close-order": CloseOrder,
