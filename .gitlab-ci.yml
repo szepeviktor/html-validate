@@ -155,14 +155,14 @@ Module:
 Dry run:
   extends: .release
   rules:
-    - if: '$CI_COMMIT_REF_NAME == "master"'
+    - if: '$CI_COMMIT_REF_NAME == "feature/manual-release"'
   script:
     - npm exec semantic-release -- --dry-run
 
 Release:
   extends: .release
   rules:
-    - if: '$CI_COMMIT_REF_NAME == "master" && $CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_COMMIT_REF_NAME == "feature/manual-release" && $CI_PIPELINE_SOURCE == "web"'
       when: manual
   script:
     - npm exec semantic-release
