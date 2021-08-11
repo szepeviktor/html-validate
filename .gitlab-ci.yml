@@ -5,26 +5,11 @@ include:
   - template: Security/License-Scanning.gitlab-ci.yml
 
 stages:
-  - prepare
   - build
   - test
   - compatibility
   - release
   - postrelease
-
-NPM:
-  stage: prepare
-  artifacts:
-    name: ${CI_PROJECT_PATH_SLUG}-${CI_PIPELINE_ID}-npm
-    paths:
-      - node_modules/
-    reports:
-      dependency_scanning: gl-dependency-scanning.json
-  script:
-    - node --version
-    - npm --version
-    - npm ci
-    - npm audit --json --production | npx gitlab-npm-audit-parser -o gl-dependency-scanning.json || true
 
 Build:
   stage: build
@@ -32,6 +17,13 @@ Build:
     name: ${CI_PROJECT_PATH_SLUG}-${CI_PIPELINE_ID}-build
     paths:
       - dist/
+    reports:
+      dependency_scanning: gl-dependency-scanning.json
+  before_script:
+    - node --version
+    - npm --version
+    - npm ci
+    - npm audit --json --production | npx gitlab-npm-audit-parser -o gl-dependency-scanning.json || true
   script:
     - npm run --if-present build
     - npm pack
@@ -51,21 +43,20 @@ pages:
 
 Changelog:
   stage: test
-  needs: ["NPM"]
-  dependencies: ["NPM"]
+  before_script:
+    - npm ci
   script:
     - npm exec commitlint -- --from=origin/master --to=${CI_COMMIT_SHA}
 
 ESLint:
   stage: test
-  needs: ["NPM", "Build"]
+  before_script:
+    - npm ci
   script:
     - npm run eslint -- --max-warnings 0
 
 Jest:
   stage: test
-  dependencies: ["NPM"]
-  needs: ["NPM"]
   coverage: /Branches\s+:\s(\d+.\d+%)/
   artifacts:
     name: ${CI_PROJECT_PATH_SLUG}-${CI_PIPELINE_ID}-coverage
@@ -73,12 +64,15 @@ Jest:
       - coverage
     reports:
       junit: temp/jest.xml
+  before_script:
+    - npm ci
   script:
     - npm test -- src/ elements/ tests/
 
 Prettier:
   stage: test
-  dependencies: ["NPM"]
+  before_script:
+    - npm ci
   script:
     - npm run prettier:check
 
@@ -87,6 +81,8 @@ Docs:
   artifacts:
     reports:
       junit: temp/jest.xml
+  before_script:
+    - npm ci
   script:
     - npm run build:docs
     - npm run htmlvalidate -- --config docs/htmlvalidate-templates.json 'docs/**/*.html'
@@ -97,7 +93,6 @@ Docs:
 
 .compat: &compat
   stage: compatibility
-  dependencies: []
   needs: ["Build"]
   before_script:
     - npm ci
@@ -137,13 +132,15 @@ Jest compat:
 
 Module:
   stage: compatibility
-  dependencies: ["NPM", "Build"]
-  needs: ["NPM", "Build"]
+  dependencies: ["Build"]
+  needs: ["Build"]
   parallel:
     matrix:
       - BUILD:
           - "esm"
           - "cjs"
+  before_script:
+    - npm ci
   script:
     - npm exec tsc -- --build tests/integration/${BUILD}
     - node tests/integration/${BUILD}
@@ -155,6 +152,8 @@ Module:
     GIT_AUTHOR_EMAIL: ${GITLAB_USER_EMAIL}
     GIT_COMMITTER_NAME: ${HTML_VALIDATE_BOT_NAME}
     GIT_COMMITTER_EMAIL: ${HTML_VALIDATE_BOT_EMAIL}
+  before_script:
+    - npm ci
 
 Dry run:
   extends: .release
