@@ -4,6 +4,9 @@ include:
   - template: Jobs/Dependency-Scanning.gitlab-ci.yml
   - template: Jobs/License-Scanning.gitlab-ci.yml
   - template: Jobs/Secret-Detection.gitlab-ci.yml
+  - project: "html-validate/gitlab-ci"
+    file:
+      - "/templates/lint.yml"
 
 variables:
   FORCE_DEPLOY_DOCS:
@@ -25,20 +28,10 @@ secret_detection:
     SECRET_DETECTION_EXCLUDED_PATHS: "node_modules"
 
 NPM:
-  stage: prepare
   artifacts:
-    name: ${CI_PROJECT_PATH_SLUG}-${CI_PIPELINE_ID}-npm
     paths:
       - node_modules/
       - tests/integration/*/node_modules/
-    reports:
-      dependency_scanning: gl-dependency-scanning.json
-  script:
-    - node --version
-    - npm --version
-    - npm ci --no-fund --no-audit --no-update-notifier
-    - npm audit --json --production | npx --yes gitlab-npm-audit-parser -o gl-dependency-scanning.json || true
-    - npx sort-package-json --check
 
 Build:
   stage: build
@@ -79,11 +72,6 @@ Changelog:
     - npm exec commitlint -- --from=origin/master --to=${CI_COMMIT_SHA}
 
 ESLint:
-  stage: test
-  needs: ["NPM", "Build"]
-  script:
-    - npm run codegen
-    - npm run eslint -- --max-warnings 0
 
 Jest:
   stage: test
@@ -104,10 +92,6 @@ Jest:
     - npm test -- src/ elements/ tests/
 
 Prettier:
-  stage: test
-  dependencies: ["NPM"]
-  script:
-    - npm run prettier:check
 
 Docs:
   stage: test
