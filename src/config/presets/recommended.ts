@@ -29,6 +29,7 @@ const config: ConfigData = {
 		"input-attributes": "error",
 		"long-title": "error",
 		"meta-refresh": "error",
+		"meta-viewport-scalable": "error",
 		"multiple-labeled-controls": "error",
 		"no-autoplay": ["error", { include: ["audio", "video"] }],
 		"no-conditional-comment": "error",

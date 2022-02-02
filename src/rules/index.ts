@@ -32,6 +32,7 @@ import InputAttributes from "./input-attributes";
 import InputMissingLabel from "./input-missing-label";
 import LongTitle from "./long-title";
 import MetaRefresh from "./meta-refresh";
+import MetaViewportScalable from "./meta-viewport-scalable";
 import MissingDoctype from "./missing-doctype";
 import MultipleLabeledControls from "./multiple-labeled-controls";
 import NoAutoplay from "./no-autoplay";
@@ -100,6 +101,7 @@ const bundledRules: Record<string, RuleConstructor<any, any>> = {
 	"input-missing-label": InputMissingLabel,
 	"long-title": LongTitle,
 	"meta-refresh": MetaRefresh,
+	"meta-viewport-scalable": MetaViewportScalable,
 	"missing-doctype": MissingDoctype,
 	"multiple-labeled-controls": MultipleLabeledControls,
 	"no-autoplay": NoAutoplay,

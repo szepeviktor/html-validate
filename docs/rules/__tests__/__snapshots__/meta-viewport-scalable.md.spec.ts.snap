@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`docs/rules/meta-viewport-scalable.md inline validation: correct 1`] = `Array []`;
+
+exports[`docs/rules/meta-viewport-scalable.md inline validation: incorrect 1`] = `
+Array [
+  Object {
+    "errorCount": 1,
+    "filePath": "inline",
+    "messages": Array [
+      Object {
+        "column": 52,
+        "context": undefined,
+        "line": 1,
+        "message": "\\"user-scalable\\" must not be disabled",
+        "offset": 51,
+        "ruleId": "meta-viewport-scalable",
+        "ruleUrl": "https://html-validate.org/rules/meta-viewport-scalable.html",
+        "selector": "meta",
+        "severity": 2,
+        "size": 16,
+      },
+    ],
+    "source": "<meta name=\\"viewport\\" content=\\"width=device-width, user-scalable=no, initial-scale=1\\" />",
+    "warningCount": 0,
+  },
+]
+`;

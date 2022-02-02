@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rule meta-viewport-scalable should contain documentation 1`] = `
+Object {
+  "description": "\`user-scalable\` must not be disabled as it interferes with the users ability to zoom on the page.
+
+Either remove the property entirely or set it to one of \`yes\` or \`1\`.",
+  "url": "https://html-validate.org/rules/meta-viewport-scalable.html",
+}
+`;
