@@ -352,11 +352,27 @@ describe("config", () => {
 			expect(elements).toEqual(["order-a", "order-b", "order-c"]);
 			expect(config.getMetaTable().getMetaFor("foo")).toEqual({
 				tagName: "foo",
+				embedded: false,
+				flow: false,
+				heading: false,
+				interactive: false,
+				labelable: false,
+				metadata: false,
+				phrasing: false,
+				sectioning: false,
 				attributes: {},
 				permittedContent: ["baz"],
 			});
 			expect(config.getMetaTable().getMetaFor("bar")).toEqual({
 				tagName: "bar",
+				embedded: false,
+				flow: false,
+				heading: false,
+				interactive: false,
+				labelable: false,
+				metadata: false,
+				phrasing: false,
+				sectioning: false,
 				attributes: {},
 				permittedContent: ["baz"],
 			});

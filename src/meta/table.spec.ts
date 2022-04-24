@@ -65,6 +65,14 @@ describe("MetaTable", () => {
 				      ],
 				    },
 				  },
+				  "embedded": false,
+				  "flow": false,
+				  "heading": false,
+				  "interactive": false,
+				  "labelable": false,
+				  "metadata": false,
+				  "phrasing": false,
+				  "sectioning": false,
 				  "tagName": "foo",
 				}
 			`);
@@ -145,7 +153,14 @@ describe("MetaTable", () => {
 			expect(table.getMetaFor("foo")).toMatchInlineSnapshot(`
 				Object {
 				  "attributes": Object {},
+				  "embedded": false,
 				  "flow": true,
+				  "heading": false,
+				  "interactive": false,
+				  "labelable": false,
+				  "metadata": false,
+				  "phrasing": false,
+				  "sectioning": false,
 				  "tagName": "foo",
 				}
 			`);
@@ -159,7 +174,14 @@ describe("MetaTable", () => {
 			expect(table.getMetaFor("foo")).toMatchInlineSnapshot(`
 				Object {
 				  "attributes": Object {},
+				  "embedded": false,
 				  "flow": true,
+				  "heading": false,
+				  "interactive": false,
+				  "labelable": false,
+				  "metadata": false,
+				  "phrasing": false,
+				  "sectioning": false,
 				  "tagName": "foo",
 				}
 			`);
@@ -173,7 +195,14 @@ describe("MetaTable", () => {
 			expect(table.getMetaFor("foo")).toMatchInlineSnapshot(`
 				Object {
 				  "attributes": Object {},
+				  "embedded": false,
 				  "flow": true,
+				  "heading": false,
+				  "interactive": false,
+				  "labelable": false,
+				  "metadata": false,
+				  "phrasing": false,
+				  "sectioning": false,
 				  "tagName": "foo",
 				}
 			`);
@@ -709,6 +738,14 @@ describe("MetaTable", () => {
 				      ],
 				    },
 				  },
+				  "embedded": false,
+				  "flow": false,
+				  "heading": false,
+				  "interactive": false,
+				  "labelable": false,
+				  "metadata": false,
+				  "phrasing": false,
+				  "sectioning": false,
 				  "tagName": "foo",
 				}
 			`);
@@ -726,7 +763,15 @@ describe("MetaTable", () => {
 				      ],
 				    },
 				  },
+				  "embedded": false,
+				  "flow": false,
+				  "heading": false,
 				  "inherit": "foo",
+				  "interactive": false,
+				  "labelable": false,
+				  "metadata": false,
+				  "phrasing": false,
+				  "sectioning": false,
 				  "tagName": "bar",
 				}
 			`);

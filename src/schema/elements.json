@@ -163,7 +163,7 @@
 
   "definitions": {
     "contentCategory": {
-      "anyOf": [{ "type": "boolean" }, { "$ref": "#/definitions/expression" }]
+      "anyOf": [{ "type": "boolean" }, { "function": true }, { "$ref": "#/definitions/expression" }]
     },
 
     "expression": {

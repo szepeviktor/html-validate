@@ -1,7 +1,10 @@
+import { HtmlElement } from "../dom";
+
 export interface PermittedGroup {
 	exclude?: string | string[];
 }
 
+export type PropertyEvaluator = (node: HtmlElement) => boolean;
 export type PropertyExpression = string | [string, any];
 export type PermittedEntry = string | any[] | PermittedGroup;
 export type Permitted = PermittedEntry[];
@@ -75,13 +78,13 @@ export interface MetaData {
 	inherit?: string;
 
 	/* content categories */
-	metadata?: boolean | PropertyExpression;
-	flow?: boolean | PropertyExpression;
-	sectioning?: boolean | PropertyExpression;
-	heading?: boolean | PropertyExpression;
-	phrasing?: boolean | PropertyExpression;
-	embedded?: boolean | PropertyExpression;
-	interactive?: boolean | PropertyExpression;
+	metadata?: boolean | PropertyExpression | PropertyEvaluator;
+	flow?: boolean | PropertyExpression | PropertyEvaluator;
+	sectioning?: boolean | PropertyExpression | PropertyEvaluator;
+	heading?: boolean | PropertyExpression | PropertyEvaluator;
+	phrasing?: boolean | PropertyExpression | PropertyEvaluator;
+	embedded?: boolean | PropertyExpression | PropertyEvaluator;
+	interactive?: boolean | PropertyExpression | PropertyEvaluator;
 
 	/* element properties */
 	deprecated?: boolean | string | DeprecatedElement;
@@ -91,7 +94,7 @@ export interface MetaData {
 	implicitClosed?: string[];
 	scriptSupporting?: boolean;
 	form?: boolean;
-	labelable?: boolean | PropertyExpression;
+	labelable?: boolean | PropertyExpression | PropertyEvaluator;
 
 	/* attribute */
 	deprecatedAttributes?: string[];
@@ -159,6 +162,19 @@ export interface MetaElement extends Omit<MetaData, "deprecatedAttributes" | "re
 	/* filled internally for reverse lookup */
 	tagName: string;
 
+	/* content categories */
+	metadata: boolean | PropertyEvaluator;
+	flow: boolean | PropertyEvaluator;
+	sectioning: boolean | PropertyEvaluator;
+	heading: boolean | PropertyEvaluator;
+	phrasing: boolean | PropertyEvaluator;
+	embedded: boolean | PropertyEvaluator;
+	interactive: boolean | PropertyEvaluator;
+
+	/* element properties */
+	labelable: boolean | PropertyEvaluator;
+
+	/* attribute */
 	attributes: Record<string, MetaAttribute>;
 }
 

@@ -14,7 +14,6 @@ import {
 	MetaDataTable,
 	MetaElement,
 	MetaLookupableProperty,
-	PropertyExpression,
 	setMetaProperty,
 } from "./element";
 import { migrateElement } from "./migrate";
@@ -29,14 +28,6 @@ const dynamicKeys: Array<keyof MetaElement> = [
 	"interactive",
 	"labelable",
 ];
-
-type PropertyEvaluator = (node: HtmlElement, options: string | [string, string, string]) => boolean;
-
-const functionTable: { [key: string]: PropertyEvaluator } = {
-	isDescendant,
-	hasAttribute,
-	matchAttribute,
-};
 
 function clone(src: any): any {
 	return JSON.parse(JSON.stringify(src));
@@ -76,6 +67,38 @@ const ajvRegexpKeyword: KeywordDefinition = {
 	schema: false,
 	errors: true,
 	validate: ajvRegexpValidate,
+};
+
+/**
+ * AJV keyword "regexp" to validate the type to be a regular expression.
+ * Injects errors with the "type" keyword to give the same output.
+ */
+/* istanbul ignore next: manual testing */
+const ajvFunctionValidate: DataValidateFunction = function (
+	data: any,
+	dataCxt?: DataValidationCxt
+): boolean {
+	const valid = typeof data === "function";
+	if (!valid) {
+		ajvRegexpValidate.errors = [
+			{
+				instancePath: dataCxt?.instancePath,
+				schemaPath: undefined,
+				keyword: "type",
+				message: "should be function",
+				params: {
+					keyword: "type",
+				},
+			},
+		];
+	}
+	return valid;
+};
+const ajvFunctionKeyword: KeywordDefinition = {
+	keyword: "function",
+	schema: false,
+	errors: true,
+	validate: ajvFunctionValidate,
 };
 
 /**
@@ -236,6 +259,7 @@ export class MetaTable {
 		const ajv = new Ajv({ strict: true, strictTuples: true, strictTypes: true });
 		ajv.addMetaSchema(ajvSchemaDraft);
 		ajv.addKeyword(ajvRegexpKeyword);
+		ajv.addKeyword(ajvFunctionKeyword);
 		ajv.addKeyword({ keyword: "copyable" });
 		return ajv.compile<MetaDataTable>(this.schema);
 	}
@@ -300,8 +324,8 @@ export class MetaTable {
 function expandProperties(node: HtmlElement, entry: MetaElement): void {
 	for (const key of dynamicKeys) {
 		const property = entry[key];
-		if (property && typeof property !== "boolean") {
-			setMetaProperty(entry, key, evaluateProperty(node, property as PropertyExpression));
+		if (typeof property === "function") {
+			setMetaProperty(entry, key, property(node));
 		}
 	}
 }
@@ -332,70 +356,5 @@ function expandRegex(entry: MetaElement): void {
 		if (values.enum) {
 			entry.attributes[name].enum = values.enum.map(expandRegexValue);
 		}
-	}
-}
-
-function evaluateProperty(node: HtmlElement, expr: PropertyExpression): boolean {
-	const [func, options] = parseExpression(expr);
-	return func(node, options);
-}
-
-function parseExpression(
-	expr: PropertyExpression
-): [PropertyEvaluator, string | [string, string, string]] {
-	if (typeof expr === "string") {
-		return parseExpression([expr, {}]);
-	} else {
-		const [funcName, options] = expr;
-		const func = functionTable[funcName];
-		if (!func) {
-			throw new Error(`Failed to find function "${funcName}" when evaluating property expression`);
-		}
-		return [func, options as string | [string, string, string]];
-	}
-}
-
-function isDescendant(node: HtmlElement, tagName: any): boolean {
-	if (typeof tagName !== "string") {
-		throw new Error(
-			`Property expression "isDescendant" must take string argument when evaluating metadata for <${node.tagName}>`
-		);
-	}
-	let cur: HtmlElement | null = node.parent;
-	while (cur && !cur.isRootElement()) {
-		if (cur.is(tagName)) {
-			return true;
-		}
-		cur = cur.parent;
-	}
-	return false;
-}
-
-function hasAttribute(node: HtmlElement, attr: any): boolean {
-	if (typeof attr !== "string") {
-		throw new Error(
-			`Property expression "hasAttribute" must take string argument when evaluating metadata for <${node.tagName}>`
-		);
-	}
-	return node.hasAttribute(attr);
-}
-
-function matchAttribute(node: HtmlElement, match: string | [string, string, string]): boolean {
-	if (!Array.isArray(match) || match.length !== 3) {
-		throw new Error(
-			`Property expression "matchAttribute" must take [key, op, value] array as argument when evaluating metadata for <${node.tagName}>`
-		);
-	}
-	const [key, op, value] = match.map((x) => x.toLowerCase());
-	const nodeValue = (node.getAttributeValue(key) || "").toLowerCase();
-	switch (op) {
-		case "!=":
-			return nodeValue !== value;
-		case "=":
-			return nodeValue === value;
-		default:
-			throw new Error(
-				`Property expression "matchAttribute" has invalid operator "${op}" when evaluating metadata for <${node.tagName}>`
-			);
 	}
 }

@@ -791,7 +791,10 @@ module.exports = {
 	input: {
 		flow: true,
 		phrasing: true,
-		interactive: ["matchAttribute", ["type", "!=", "hidden"]],
+		interactive(node) {
+			const type = (node.getAttributeValue("type") ?? "").toLowerCase();
+			return type !== "hidden";
+		},
 		void: true,
 		labelable: ["matchAttribute", ["type", "!=", "hidden"]],
 		attributes: {
