@@ -1,4 +1,5 @@
 import { glob } from "glob";
+import "./jest";
 import { Config, ConfigData, ConfigLoader, Severity } from "./config";
 import { Source, SourceHooks } from "./context";
 import HtmlValidate from "./htmlvalidate";

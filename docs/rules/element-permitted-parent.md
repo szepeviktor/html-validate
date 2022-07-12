@@ -10,7 +10,8 @@ summary: Validate permitted parent
 Some elements have restrictions for what parent element they can have.
 For instance, the parent of `<body>` element must the `<html>` element.
 
-This rule does not validate the document root element, e.g. while the `<body>` element can only have `<html>` as parent if there is no parent at all it is assumed to be valid usage.
+Unless {@link usage#embedded embedding} is configured this this rule does not validate the document root element, e.g. while the `<body>` element can only have `<html>` as parent if there is no parent at all it is assumed to be valid usage.
+When embedding is configured the this rules acts as if the configured element wraps the document.
 
 ## Rule details
 

@@ -166,7 +166,7 @@ describe("HtmlElement", () => {
 
 	it("rootNode()", () => {
 		expect.assertions(4);
-		const node = HtmlElement.rootNode(location);
+		const node = HtmlElement.rootNode(location, null);
 		expect(node.isRootElement()).toBeTruthy();
 		expect(node.nodeType).toEqual(NodeType.DOCUMENT_NODE);
 		expect(node.nodeName).toBe("#document");
@@ -601,7 +601,7 @@ describe("HtmlElement", () => {
 
 		it("root element should not receive selector", () => {
 			expect.assertions(1);
-			const el = HtmlElement.rootNode(location);
+			const el = HtmlElement.rootNode(location, null);
 			expect(el.generateSelector()).toBeNull();
 		});
 	});
@@ -860,13 +860,14 @@ describe("HtmlElement", () => {
 	describe("visitDepthFirst()", () => {
 		it("should visit all nodes in correct order", () => {
 			expect.assertions(1);
-			const root = HtmlElement.rootNode({
+			const location: Location = {
 				filename: "inline",
 				offset: 0,
 				line: 1,
 				column: 1,
 				size: 1,
-			});
+			};
+			const root = HtmlElement.rootNode(location, null);
 			/* eslint-disable @typescript-eslint/no-unused-vars */
 			const a = new HtmlElement("a", root, NodeClosed.EndTag, null, location);
 			const b = new HtmlElement("b", root, NodeClosed.EndTag, null, location);

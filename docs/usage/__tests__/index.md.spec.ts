@@ -1,6 +1,9 @@
 import HtmlValidate from "../../../src/htmlvalidate";
 
 const markup: { [key: string]: string } = {};
+markup["embedded"] = `<body>
+  <p>Lorem ipsum</p>
+</body>`;
 markup["directive-commend"] = `<!-- [html-validate-disable-next deprecated -- justification for disabling] -->
 <blink>Blinking text</blink>
 <!-- [html-validate-disable-next deprecated: justification for disabling] -->
@@ -17,6 +20,12 @@ markup["disable-next-deprecated"] = `<!-- [html-validate-disable-next deprecated
 <blink>But this line will</blink>`;
 
 describe("docs/usage/index.md", () => {
+	it("inline validation: embedded", () => {
+		expect.assertions(1);
+		const htmlvalidate = new HtmlValidate({"embedded":"main","extends":["html-validate:recommended"]});
+		const report = htmlvalidate.validateString(markup["embedded"]);
+		expect(report.results).toMatchSnapshot();
+	});
 	it("inline validation: directive-commend", () => {
 		expect.assertions(1);
 		const htmlvalidate = new HtmlValidate({"extends":["html-validate:recommended"]});

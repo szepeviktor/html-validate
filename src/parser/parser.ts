@@ -47,6 +47,7 @@ function svgShouldRetainTag(foreignTagName: string, tagName: string): boolean {
 export class Parser {
 	private readonly event: EventHandler;
 	private readonly metaTable: MetaTable;
+	private embedded: string | false;
 	private currentNamespace: string = "";
 	private dom: DOMTree;
 
@@ -59,6 +60,7 @@ export class Parser {
 		this.event = new EventHandler();
 		this.dom = null as unknown as DOMTree;
 		this.metaTable = config.getMetaTable();
+		this.embedded = config.getEmbedded();
 	}
 
 	/**
@@ -78,14 +80,22 @@ export class Parser {
 			};
 		}
 
-		/* reset DOM in case there are multiple calls in the same session */
-		this.dom = new DOMTree({
-			filename: source.filename ?? "",
-			offset: source.offset ?? 0,
-			line: source.line ?? 1,
-			column: source.column ?? 1,
+		const rootLocation: Location = {
+			filename: source.filename,
+			offset: source.offset,
+			line: source.line,
+			column: source.column,
 			size: 0,
-		});
+		};
+
+		/* reset DOM in case there are multiple calls in the same session */
+		if (this.embedded) {
+			const tagName = this.embedded;
+			const rootMeta = this.metaTable.getMetaFor(tagName);
+			this.dom = new DOMTree(rootLocation, rootMeta);
+		} else {
+			this.dom = new DOMTree(rootLocation);
+		}
 
 		/* trigger any rules waiting for DOM load event */
 		this.trigger("dom:load", {

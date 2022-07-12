@@ -37,6 +37,20 @@
       ]
     },
 
+    "embedded": {
+      "title": "Consider all markup as being embedded inside an element.",
+      "examples": ["div"],
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "boolean",
+          "enum": [false]
+        }
+      ]
+    },
+
     "plugins": {
       "type": "array",
       "items": {

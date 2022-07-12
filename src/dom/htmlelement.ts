@@ -86,9 +86,13 @@ export class HtmlElement extends DOMNode {
 	/**
 	 * @internal
 	 */
-	public static rootNode(location: Location): HtmlElement {
-		const root = new HtmlElement(undefined, null, NodeClosed.EndTag, null, location);
-		root.setAnnotation("#document");
+	public static rootNode(location: Location, meta: MetaElement | null): HtmlElement {
+		const root = new HtmlElement(undefined, null, NodeClosed.EndTag, meta, location);
+		if (meta) {
+			root.setAnnotation(`<${meta.tagName}> (configured embedding)`);
+		} else {
+			root.setAnnotation("#document");
+		}
 		return root;
 	}
 

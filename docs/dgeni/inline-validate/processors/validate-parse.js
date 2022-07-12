@@ -100,6 +100,10 @@ module.exports = function parseValidatesProcessor(
 		if (elements) {
 			config.elements = ["html5", elements];
 		}
+		if (attr.embedded) {
+			config.embedded = attr.embedded;
+			delete attr.embedded;
+		}
 		if (rules) {
 			config.rules = rules.reduce((dst, rule) => {
 				if (attr[rule]) {

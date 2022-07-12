@@ -199,3 +199,33 @@ it("should allow inline metadata", () => {
 	);
 	expect(report).toBeValid();
 });
+
+describe("with embedded configured", () => {
+	it("should report error when element is not permitted under embedded element", () => {
+		expect.assertions(2);
+		const htmlvalidate = new HtmlValidate({
+			extends: ["html-validate:recommended"],
+			embedded: "span",
+		});
+		const markup = /* HTML */ `<div></div>`;
+		const report = htmlvalidate.validateString(markup);
+		expect(report).toBeInvalid();
+		expect(report).toMatchInlineCodeframe(`
+			"error: <div> element is not permitted as content under <span> (configured embedding) (element-permitted-content) at inline:1:2:
+			> 1 | <div></div>
+			    |  ^^^
+			Selector: div"
+		`);
+	});
+
+	it("should not report error when element is permitted under embedded element", () => {
+		expect.assertions(1);
+		const htmlvalidate = new HtmlValidate({
+			extends: ["html-validate:recommended"],
+			embedded: "span",
+		});
+		const markup = /* HTML */ `<em></em>`;
+		const report = htmlvalidate.validateString(markup);
+		expect(report).toBeValid();
+	});
+});

@@ -99,3 +99,36 @@ exports[`docs/usage/index.md inline validation: disable-next-deprecated 1`] = `
   },
 ]
 `;
+
+exports[`docs/usage/index.md inline validation: embedded 1`] = `
+[
+  {
+    "errorCount": 1,
+    "filePath": "inline",
+    "messages": [
+      {
+        "column": 2,
+        "context": {
+          "child": "<body>",
+          "parent": "<main> (configured embedding)",
+          "rules": [
+            "html",
+          ],
+        },
+        "line": 1,
+        "message": "<body> element requires a <html> element as parent",
+        "offset": 1,
+        "ruleId": "element-permitted-parent",
+        "ruleUrl": "https://html-validate.org/rules/element-permitted-parent.html",
+        "selector": "body",
+        "severity": 2,
+        "size": 4,
+      },
+    ],
+    "source": "<body>
+  <p>Lorem ipsum</p>
+</body>",
+    "warningCount": 0,
+  },
+]
+`;

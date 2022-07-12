@@ -15,6 +15,7 @@ export interface TransformerEntry {
 
 export interface ResolvedConfigData {
 	metaTable: MetaTable;
+	embedded: string | false;
 	plugins: Plugin[];
 	rules: Map<string, [Severity, RuleOptions]>;
 	transformers: TransformerEntry[];
@@ -26,12 +27,14 @@ export interface ResolvedConfigData {
  */
 export class ResolvedConfig {
 	private metaTable: MetaTable;
+	private embedded: string | false;
 	private plugins: Plugin[];
 	private rules: Map<string, [Severity, RuleOptions]>;
 	private transformers: TransformerEntry[];
 
-	public constructor({ metaTable, plugins, rules, transformers }: ResolvedConfigData) {
+	public constructor({ metaTable, embedded, plugins, rules, transformers }: ResolvedConfigData) {
 		this.metaTable = metaTable;
+		this.embedded = embedded;
 		this.plugins = plugins;
 		this.rules = rules;
 		this.transformers = transformers;
@@ -39,6 +42,10 @@ export class ResolvedConfig {
 
 	public getMetaTable(): MetaTable {
 		return this.metaTable;
+	}
+
+	public getEmbedded(): string | false {
+		return this.embedded;
 	}
 
 	public getPlugins(): Plugin[] {

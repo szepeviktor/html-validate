@@ -1,5 +1,5 @@
 import { Location } from "../context";
-import { MetaTable } from "../meta";
+import { MetaElement, MetaTable } from "../meta";
 import { HtmlElement } from "./htmlelement";
 
 export class DOMTree {
@@ -7,8 +7,10 @@ export class DOMTree {
 	private active: HtmlElement;
 	public doctype: string | null;
 
-	public constructor(location: Location) {
-		this.root = HtmlElement.rootNode(location);
+	public constructor(location: Location);
+	public constructor(location: Location, meta: MetaElement | null);
+	public constructor(location: Location, meta?: MetaElement | null) {
+		this.root = HtmlElement.rootNode(location, meta ?? null);
 		this.active = this.root;
 		this.doctype = null;
 	}

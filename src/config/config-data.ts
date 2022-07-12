@@ -37,6 +37,21 @@ export interface ConfigData {
 	elements?: Array<string | Record<string, unknown>>;
 
 	/**
+	 * Consider all markup as being embedded inside an element.
+	 *
+	 * Setting this to a tagname makes the validator behave as if all markup is
+	 * surrounded by that tagname, e.g. by setting to `div` makes it behave as
+	 * `<div>${markup}</div>`.
+	 *
+	 * This is useful when all of your source markup is embedded into a different
+	 * system as partial markup.
+	 *
+	 * Default is `false` meaning no embedding is present and to follow default
+	 * HTML5 rules.
+	 */
+	embedded?: false | string;
+
+	/**
 	 * List of plugins.
 	 *
 	 * Each plugin must be resolvable be require and export the plugin interface.

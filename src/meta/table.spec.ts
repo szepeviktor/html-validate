@@ -240,6 +240,7 @@ describe("MetaTable", () => {
 			});
 			config = new ResolvedConfig({
 				metaTable,
+				embedded: false,
 				plugins: [],
 				rules: new Map(),
 				transformers: [],
@@ -258,6 +259,7 @@ describe("MetaTable", () => {
 			});
 			config = new ResolvedConfig({
 				metaTable,
+				embedded: false,
 				plugins: [],
 				rules: new Map(),
 				transformers: [],
@@ -286,6 +288,7 @@ describe("MetaTable", () => {
 				});
 				config = new ResolvedConfig({
 					metaTable,
+					embedded: false,
 					plugins: [],
 					rules: new Map(),
 					transformers: [],
@@ -332,6 +335,7 @@ describe("MetaTable", () => {
 				});
 				config = new ResolvedConfig({
 					metaTable,
+					embedded: false,
 					plugins: [],
 					rules: new Map(),
 					transformers: [],
@@ -390,6 +394,7 @@ describe("MetaTable", () => {
 				});
 				config = new ResolvedConfig({
 					metaTable,
+					embedded: false,
 					plugins: [],
 					rules: new Map(),
 					transformers: [],

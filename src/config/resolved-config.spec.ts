@@ -7,6 +7,7 @@ function createMockConfig(config: Partial<ResolvedConfigData> = {}): ResolvedCon
 	const metaTable = new MetaTable();
 	const defaults: ResolvedConfigData = {
 		metaTable,
+		embedded: false,
 		plugins: [],
 		rules: new Map(),
 		transformers: [],

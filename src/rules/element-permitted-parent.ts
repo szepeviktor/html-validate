@@ -79,7 +79,7 @@ export default class ElementPermittedParent extends Rule<RuleContext> {
 
 				/* don't validate root element as the <html> and <body> tag is optional
 				 * so anything could be directly under the root element. */
-				if (parent.isRootElement()) {
+				if (parent.isRootElement() && !parent.meta) {
 					return;
 				}
 

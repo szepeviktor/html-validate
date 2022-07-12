@@ -22,6 +22,7 @@ describe("Meta validator", () => {
 		metaTable = new MetaTable();
 		config = new ResolvedConfig({
 			metaTable,
+			embedded: false,
 			plugins: [],
 			rules: new Map(),
 			transformers: [],

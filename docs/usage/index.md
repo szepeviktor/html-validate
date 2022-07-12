@@ -180,6 +180,74 @@ This also affects CLI `--config` and the API, e.g. when using `--config` with a
 configuration using `"root": true` will prevent any additional files to be
 loaded.
 
+### `embedded`
+
+When validating a partial template that is inserted into a final template it is sometimes useful to configure `embedded` to limit the content that is allowed.
+
+For instance, if you have a layout template inserting content under the `<main>` element:
+
+`layout.html`:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Lorem ipsum</title>
+  </head>
+  <body>
+    <header>dolor sit amet</header>
+    <main>${partial}</main>
+  </body>
+</html>
+```
+
+And a partial template:
+
+`partial.html`:
+
+```html
+<body>
+  <p>Lorem ipsum</p>
+</body>
+```
+
+When this is assembled into the final document it would look like this:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Lorem ipsum</title>
+  </head>
+  <body>
+    <header>dolor sit amet</header>
+    <main>
+      <body>
+        <p>Lorem ipsum</p>
+      </body>
+    </main>
+  </body>
+</html>
+```
+
+This is not a valid document (`<body>` cannot be nested or used under `<main>`) and by configuring `embedded` we can get errors directly in the partial:
+
+```json
+{
+  "extends": ["html-validate:recommended"],
+  "elements": ["html5"],
+  "embedded": "main"
+}
+```
+
+With this configuration we now get an error:
+
+<validate name="embedded" embedded="main">
+  <body>
+    <p>Lorem ipsum</p>
+  </body>
+</validate>
+
 ## Inline configuration
 
 Configuration can be changed inline using directive of the form:

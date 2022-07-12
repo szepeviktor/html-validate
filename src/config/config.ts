@@ -93,6 +93,7 @@ export class Config {
 	private initialized: boolean;
 
 	protected metaTable: MetaTable | null;
+	protected embedded: string | false | undefined;
 	protected plugins: LoadedPlugin[];
 	protected transformers: TransformerEntry[] = [];
 	protected rootDir: string;
@@ -180,6 +181,7 @@ export class Config {
 		};
 		this.config = mergeInternal(initial, options || {});
 		this.metaTable = null;
+		this.embedded = this.config.embedded;
 		this.rootDir = this.findRootDir();
 		this.initialized = false;
 
@@ -476,6 +478,7 @@ export class Config {
 	public resolveData(): ResolvedConfigData {
 		return {
 			metaTable: this.getMetaTable(),
+			embedded: this.embedded ?? false,
 			plugins: this.getPlugins(),
 			rules: this.getRules(),
 			transformers: this.transformers,

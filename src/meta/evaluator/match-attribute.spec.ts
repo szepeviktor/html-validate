@@ -4,7 +4,13 @@ import { MetaTable } from "../table";
 import { matchAttribute } from "./match-attribute";
 
 const metaTable = new MetaTable();
-const config = new ResolvedConfig({ metaTable, plugins: [], rules: new Map(), transformers: [] });
+const config = new ResolvedConfig({
+	metaTable,
+	embedded: false,
+	plugins: [],
+	rules: new Map(),
+	transformers: [],
+});
 const parser = new Parser(config);
 
 describe("operator =", () => {
